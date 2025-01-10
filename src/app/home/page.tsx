@@ -32,7 +32,7 @@ const Carousel = () => {
 
   return (
     <div className="relative w-full max-w-4xl overflow-hidden mt-10">
-      <div className="relative w-[700px] h-[450px] justify-start items-center mx-auto">
+      <div className="relative w-[700px] h-[350px] justify-start items-center mx-auto border border-black">
         <button
           onClick={goToPrevious}
           className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full z-10"
@@ -119,12 +119,12 @@ const HomePage = () => {
           </p>
         </div>
       </div>
-      <div className="absolute bottom-20 right-0 w-1/4 mr-96">
+      <div className="absolute bottom-10 right-14 w-1/4 mr-96">
         <div className="text-center justify-center border-2 border-black h-72 mt-2">
           <p className="text-black mt-2 text-lg">Find your order</p>
 
           <div className="mt-8">
-            <p className="text-black">Please enter your email</p>
+            <p className="text-black mb-2">Please enter your email</p>
             <input
               type="email"
               placeholder="Email"
@@ -138,43 +138,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
-/*
-const HomePage = () => {
-  return (
-    <div>
-      <div className="flex justify-center items-center mt-6">
-        <div className="flex flex-col items-center justify-center border-2 border-black w-2/4 h-80">
-          <Image
-            src="/images/lilbits.png"
-            alt="logo"
-            width={500}
-            height={500}
-            className=""
-          />
-        </div>
-      </div>
-
-      <div className="flex justify-center items-center">
-        <div className="text-center justify-center border-2 border-black w-1/4 h-72 mt-4">
-          <p className="text-black mt-2 text-lg">Find your order</p>
-
-          <div className="mt-16">
-            <p className="text-black">Please enter your email</p>
-            <input
-              type="email"
-              placeholder="Email"
-              className="px-4 py-2 rounded-sm mt-1 text-black border-black"
-            />
-          </div>
-        </div>
-        <div className="text-center justify-center border-2 border-black w-1/4 h-72 mt-4 ml-4">
-          <p className="text-black mt-2 text-lg">Order</p>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default HomePage;
-*/
