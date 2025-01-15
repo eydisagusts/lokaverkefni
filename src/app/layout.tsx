@@ -1,11 +1,19 @@
+'use client';
 import Image from "next/image";
 import "./globals.css";
+import { usePathname } from "next/navigation";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+
+  // Helper function to check if the menu item should be highlighted
+  const isActive = (path: string) =>
+    pathname === path ? "text-white font-bold" : "text-black";
+
   return (
     <html lang="en">
       <body className="bg-[#E0E39A]">
@@ -19,21 +27,23 @@ export default function RootLayout({
                 height={160}
                 className="ml-16"
               />
-              <ul className="flex flex-row text-center space-x-10 ml-44 text-xl text-black ">
+              <ul className="flex flex-row text-center space-x-10 ml-44 text-xl">
                 <li>
-                  <p>Home</p>
+                  <p className={`${isActive("/")}`}>Home</p>
                 </li>
                 <li>
-                  <p>Pick Dish Screen</p>
+                  <p className={`${isActive("/menu/pickdish")}`}>Pick Dish Screen</p>
                 </li>
                 <li>
-                  <p>Select Drink</p>
+                  <p className={`${isActive("/menu/pickdrink")}`}>Select Drink</p>
                 </li>
                 <li>
-                  <p>Order Screen</p>
+                  <p className={`${isActive("/orderscreen")}`}>Order Screen</p>
                 </li>
                 <li>
-                  <p>Receipt Screen</p>
+                  <p className={`${isActive("/receiptscreen")}`}>
+                    Receipt Screen
+                  </p>
                 </li>
               </ul>
               <div>

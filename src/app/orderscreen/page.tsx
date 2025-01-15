@@ -1,8 +1,5 @@
 'use client';
 import React, { useState } from "react";
-import { OrderList as DrinkOrderList } from "./menu/pickdrink/page";
-import { OrderList as DishOrderList } from "./menu/pickdish/page";
-import type { Dish } from "./menu/pickdish/page";
 
 const OrderScreen = () => {
     const [dishOrder, setDishOrder] = useState<Dish[]>([
