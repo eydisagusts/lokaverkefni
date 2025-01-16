@@ -46,14 +46,6 @@ export default function RootLayout({
                   </p>
                 </li>
               </ul>
-              <div>
-                <button
-                  type="button"
-                  className="border-2 shadow-md bg-gray-200 px-10 py-2 ml-36 text-black rounded-full hover:bg-gray-400 hover:border-gray-400"
-                >
-                  Order
-                </button>
-              </div>
             </div>
           </div>
         </header>

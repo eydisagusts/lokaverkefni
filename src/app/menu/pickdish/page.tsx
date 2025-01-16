@@ -95,7 +95,7 @@ const PickDishScreen = () => {
   };
 
   const handleGoBack = () => {
-    window.location.href = 'wrw/';
+    window.location.href = '/';
   };
 
   const handleNextButtonClick = () => {
