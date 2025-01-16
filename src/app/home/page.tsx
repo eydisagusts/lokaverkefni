@@ -189,7 +189,7 @@ const HomePage = () => {
             />
             <button
               type="button"
-              className="px-4 py-2 mt-4 bg-[#C16757] text-white rounded-full"
+              className="px-4 py-2 mt-4 bg-[#C16757] text-white rounded-full transition duration-300"
               onClick={handleEmailSubmit}
             >
               Submit

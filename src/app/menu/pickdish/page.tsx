@@ -141,14 +141,14 @@ const PickDishScreen = () => {
         <div className="flex justify-center gap-4 mt-6">
           <button
             type="button"
-            className="p-4 rounded-full bg-[#C16757] text-white shadow-md hover:bg-[#A34A3F]"
+            className="p-4 rounded-full bg-[#C16757] text-white shadow-md hover:bg-[#A34A3F] transition duration-300"
             onClick={fetchRandomDish}
           >
             Generate New Dish
           </button>
           <button
             type="button"
-            className="p-4 rounded-full bg-[#C16757] text-white shadow-md hover:bg-[#A34A3F]"
+            className="p-4 rounded-full bg-[#C16757] text-white shadow-md hover:bg-[#A34A3F] transition duration-300"
             onClick={handleAddToOrder}
           >
             Add to Order
@@ -200,7 +200,7 @@ const PickDishScreen = () => {
           <button 
           type="button"
           onClick={handleNextButtonClick}
-          className="px-8 py-2 rounded-full bg-[#C16757] text-white shadow-md hover:bg-[#A34A3F]"
+          className="px-8 py-2 rounded-full bg-[#C16757] text-white shadow-md hover:bg-[#A34A3F] transition duration-300"
           >
             Next
             </button>

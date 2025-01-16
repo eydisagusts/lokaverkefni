@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
+import { faPlus, faCheck } from "@fortawesome/free-solid-svg-icons";
 
 type Drink = {
   id: string;
@@ -18,8 +18,6 @@ type OrderItem = {
   drink: Drink;
   quantity: number;
 };
-
-
 
 const PickDrinkScreen = () => {
   const [drinks, setDrinks] = useState<Drink[]>([]);
@@ -42,8 +40,6 @@ const PickDrinkScreen = () => {
     fetchDrinks();
   }, []);
 
-  
-
   const handleAddToOrder = (drink: Drink) => {
     setOrderList((prevOrderList) => {
       const drinkSum = prevOrderList.reduce((sum, item) => sum + item.quantity, 0);
@@ -52,9 +48,9 @@ const PickDrinkScreen = () => {
         alert("You can only order up to 10 drinks!");
         return prevOrderList;
       }
-  
+
       const existingItem = prevOrderList.find((item) => item.drink.id === drink.id);
-  
+
       if (existingItem) {
         return prevOrderList.map((item) =>
           item.drink.id === drink.id
@@ -62,33 +58,32 @@ const PickDrinkScreen = () => {
             : item
         );
       }
-  
+
       return [...prevOrderList, { drink, quantity: 1 }];
     });
   };
-  
 
   const handleRemoveFromOrder = (drink: Drink) => {
-  setOrderList((prevOrderList) => 
-    prevOrderList
-      .map((item) =>
-        item.drink.id === drink.id ? { ...item, quantity: item.quantity - 1 } : item
-      )
-      .filter((item) => item.quantity > 0)
+    setOrderList((prevOrderList) =>
+      prevOrderList
+        .map((item) =>
+          item.drink.id === drink.id ? { ...item, quantity: item.quantity - 1 } : item
+        )
+        .filter((item) => item.quantity > 0)
     );
   };
 
   const handlePlusIcon = (drink: Drink) => {
     setOrderList((prevOrderList) => {
       const drinkSum = prevOrderList.reduce((sum, item) => sum + item.quantity, 0);
-  
+
       if (drinkSum >= 10) {
         alert("You can only order up to 10 drinks!");
         return prevOrderList;
       }
-  
+
       const existingItem = prevOrderList.find((item) => item.drink.id === drink.id);
-  
+
       if (existingItem) {
         return prevOrderList.map((item) =>
           item.drink.id === drink.id
@@ -96,7 +91,7 @@ const PickDrinkScreen = () => {
             : item
         );
       }
-  
+
       return [...prevOrderList, { drink, quantity: 1 }];
     });
   };
@@ -106,6 +101,10 @@ const PickDrinkScreen = () => {
   }
 
   const handleNextButton = () => {
+    if (orderList.length === 0) {
+      alert("Please select at least one drink before proceeding.");
+      return;
+    }
     window.location.href = "../orderscreen";
   }
 
@@ -133,7 +132,7 @@ const PickDrinkScreen = () => {
             drinks.map((drink) => (
               <div
                 key={drink.id}
-                className="border-2 border-black cursor-pointer rounded-md overflow-hidden shadow-lg hover:bg-gray-300 flex flex-col justify-between"
+                className="relative border-2 border-black cursor-pointer rounded-md overflow-hidden shadow-lg hover:bg-gray-300 flex flex-col justify-between"
                 onClick={() => handleAddToOrder(drink)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
@@ -156,6 +155,11 @@ const PickDrinkScreen = () => {
                   </div>
                   <p className="text-green-900 text-sm mt-2">${drink.price}</p>
                 </div>
+                {orderList.some((item) => item.drink.id === drink.id) && (
+                  <div className="absolute top-2 right-2 text-green-500">
+                    <FontAwesomeIcon icon={faCheck} size="2x" />
+                  </div>
+                )}
               </div>
             ))
           ) : (
@@ -207,7 +211,7 @@ const PickDrinkScreen = () => {
           <button 
             type="button"
             onClick={handleNextButton}
-            className="p-2 px-10 text-lg mt-4 rounded-full bg-[#C16757] shadow-md ml-96 hover:bg-[#A34A3F] text-white"
+            className="p-2 px-10 text-lg mt-4 rounded-full bg-[#C16757] shadow-md ml-96 hover:bg-[#A34A3F] text-white transition duration-300"
           >
             Next
           </button>
