@@ -50,13 +50,15 @@ export default function RootLayout({
           </div>
         </header>
         <div className="flex flex-col min-h-screen">
-          <main className="flex-grow">{children}</main>
-          <footer className="mt-auto">
-            <p className="text-center bg-[#C16757] p-6 text-xl py-8 text-gray-100">
-              &copy; 2021 Lilbits. All rights reserved.
-            </p>
-          </footer>
-        </div>
+  <main className="flex-grow mb-36">
+    {children}
+  </main>
+  <footer className="mt-auto bg-[#C16757] text-gray-100 text-center p-6">
+    <p className="text-1xl py-8">
+      &copy; 2024 LIL&apos;BITS. All rights reserved.
+    </p>
+  </footer>
+</div>
       </body>
     </html>
   );

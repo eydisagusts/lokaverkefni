@@ -30,8 +30,8 @@ const Carousel: React.FC<CarouselProps> = ({ carouselImages }) => {
   };
 
   return (
-    <div className="relative w-full max-w-4xl overflow-hidden mt-10">
-      <div className="relative w-[700px] h-[350px] justify-start items-center mx-auto border border-black">
+    <div className="relative w-full max-w-4xl overflow-hidden mt-10 px-4 sm:px-8 mx-auto">
+      <div className="relative w-full h-[200px] md:w-[500px] md:h-[350px] sm:w-[200px] sm:h-[200px] mx-auto border border-black">
         <button
           type="button"
           onClick={goToPrevious}
@@ -43,10 +43,10 @@ const Carousel: React.FC<CarouselProps> = ({ carouselImages }) => {
           <Image
             src={carouselImages[currentIndex]}
             alt={`meal${currentIndex + 1}`}
-            width={700}
-            height={450}
-            priority
             className="object-cover w-full h-full"
+            priority
+            width={500}
+            height={500}
           />
         )}
         <button
@@ -116,29 +116,54 @@ const HomePage = () => {
 
   return (
     <>
-      <div className="relative text-black">
-        <Carousel carouselImages={carouselImages} />
-        <div className="absolute top-0 right-0 mt-16 mr-24 text-center w-2/6 ">
-          <div>
-            <h1 className="font-bold mb-2 text-3xl">Welcome to Lil'bits!</h1>
-            <p>
-              At Lil'bits, we believe the best moments are shared over delicious
+      <div className="relative text-black space-y-8 px-4 sm:px-8 md:px-16 lg:px-24">
+        <div className="flex flex-col lg:flex-row lg:space-x-8">
+          <div className="lg:w-1/2">
+            <Carousel carouselImages={carouselImages} />
+          </div>
+          <div className="lg:w-2/5 flex flex-col justify-center items-start text-center mt-20 md:w-3/4 ml-20 ">
+            <h1 className="lg:font-bold mb-2 text-2xl ml-36">Welcome to Lil&apos;bits!</h1>
+            <p className="m:w-10 text-center">
+              At Lil&apos;bits, we believe the best moments are shared over delicious
               food and great drinks. Located in the heart of Reykjavík, our cozy
               spot offers a little bit of everything—from hearty meals to
               shareable bites, refreshing cocktails, and everything in between.
               Our menu is inspired by comfort classics with a modern twist, made
               fresh from locally sourced ingredients. Whether you’re stopping by
               for a casual lunch, a lively happy hour, or an intimate dinner,
-              Lil'bits is here to make every visit special. Come for the food,
+              Lil&apos;bits is here to make every visit special. Come for the food,
               stay for the vibe—because life’s best moments come in little bits.
             </p>
+            <div className="w-full md:w-3/4 mt-8 mr-28">
+              <div className="text-center justify-center border-2 border-black h-72  p-4 lg:mt-20 ml-16 w-full">
+                <p className="text-black mt-2 text-lg">Find your order</p>
+                <div className="mt-8">
+                  <p className="text-black mb-2">Please enter your email</p>
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    className="px-4 py-2 rounded-sm mt-1 text-black border-black w-full"
+                    value={email}
+                    onChange={handleEmailChange}
+                  />
+                  <button
+                    type="button"
+                    className="px-4 py-2 mt-4 bg-[#C16757] text-white rounded-full transition duration-300 w-full"
+                    onClick={handleEmailSubmit}
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="w-3/6 ml-36 mt-6 mb-36">
-          <h1 className="text-3xl font-bold ml-20 mb-4">
-            How to Reserve a Table at Lil'bits
+        <div className="lg:absolute top-96">
+        <div className="lg:w-2/5 md:w-3/4 ml-20 mb-36 ">
+          <h1 className="text-3xl font-bold mb-4 text-center">
+            How to Reserve a Table at Lil&apos;bits
           </h1>
-          <ol className="space-y-4 list-decimal ml-20">
+          <ol className="list-decimal pl-4 md:pl-16">
             <li className="font-bold">
               Order Dishes –
               <span className="font-normal">
@@ -168,34 +193,13 @@ const HomePage = () => {
               </span>
             </li>
           </ol>
-          <p className="mt-6 ml-16">
+          <p className="mt-6 text-center md:text-center">
             Planning your perfect dining experience has never been simpler.
             Start your reservation today and get ready to enjoy the
-            unforgettable flavors of Lil'bits!
+            unforgettable flavors of Lil&apos;bits!
           </p>
         </div>
       </div>
-      <div className="absolute -bottom-24 right-14 w-1/4 mr-24">
-        <div className="text-center justify-center border-2 border-black h-72 mt-2">
-          <p className="text-black mt-2 text-lg">Find your order</p>
-          <div className="mt-8">
-            <p className="text-black mb-2">Please enter your email</p>
-            <input
-              type="email"
-              placeholder="Email"
-              className="px-4 py-2 rounded-sm mt-1 text-black border-black"
-              value={email}
-              onChange={handleEmailChange}
-            />
-            <button
-              type="button"
-              className="px-4 py-2 mt-4 bg-[#C16757] text-white rounded-full transition duration-300"
-              onClick={handleEmailSubmit}
-            >
-              Submit
-            </button>
-          </div>
-        </div>
       </div>
     </>
   );
