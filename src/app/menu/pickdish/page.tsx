@@ -105,23 +105,23 @@ const PickDishScreen = () => {
   const totalQuantity = orderList.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <div className="flex w-full p-4">
+    <div className="flex flex-col lg:flex-row w-full p-4">
       <div className="flex-1 text-center">
         <div className="absolute left-2">
-        <button
-          type="button"
-          className="p-2 rounded-full underline text-black hover:text-gray-500"
-          onClick={handleGoBack}
-        >
-          Go Back
-        </button>
+          <button
+            type="button"
+            className="p-2 rounded-full underline text-black hover:text-gray-500"
+            onClick={handleGoBack}
+          >
+            Go Back
+          </button>
         </div>
         <h1 className="text-black text-4xl mt-8">Your Dish Selection</h1>
         <p className="text-black mt-2">You can order up to 10 dishes!</p>
 
         <div className="mt-8">
           {dish ? (
-            <div className="border-2 border-black rounded-md p-4 mx-auto w-1/2">
+            <div className="border-2 border-black rounded-md p-4 mx-auto w-full md:w-1/2">
               <Image
                 src={dish.imageSource}
                 alt={dish.name}
@@ -156,7 +156,7 @@ const PickDishScreen = () => {
         </div>
       </div>
 
-      <div className="w-1/3 mt-16 mr-36">
+      <div className="w-2/3 lg:w-1/3 mt-16 ml-36 lg:mt-28 lg:mr-20 lg:ml-8">
         <div className="border-2 border-black rounded-md p-4 flex flex-col justify-center">
           <h2 className="text-xl text-black font-bold mb-4 text-center">Your Order</h2>
           {orderList.length > 0 ? (
@@ -196,14 +196,14 @@ const PickDishScreen = () => {
             <p className="text-black">Total dishes: {totalQuantity}</p>
           </div>
         </div>
-        <div className="mt-4 ml-96">
+        <div className="mt-4 flex justify-center lg:justify-end">
           <button 
-          type="button"
-          onClick={handleNextButtonClick}
-          className="px-8 py-2 rounded-full bg-[#C16757] text-white shadow-md hover:bg-[#A34A3F] transition duration-300"
+            type="button"
+            onClick={handleNextButtonClick}
+            className="px-8 py-2 rounded-full bg-[#C16757] text-white shadow-md hover:bg-[#A34A3F] transition duration-300"
           >
             Next
-            </button>
+          </button>
         </div>
       </div>
     </div>

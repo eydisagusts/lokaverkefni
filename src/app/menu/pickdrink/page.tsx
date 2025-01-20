@@ -111,7 +111,7 @@ const PickDrinkScreen = () => {
   const drinkSum = orderList.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <div className="flex w-full p-4">
+    <div className="flex flex-col lg:flex-row w-full p-4">
       <div className="flex-1">
         <div className="absolute left-2">
           <button
@@ -127,7 +127,7 @@ const PickDrinkScreen = () => {
           <p className="text-black">You can order up to 10 drinks!</p>
         </div>
 
-        <div className="grid grid-cols-3 gap-4 mt-8 w-4/5 ml-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-8 w-full lg:w-4/5 mx-auto">
           {drinks.length > 0 ? (
             drinks.map((drink) => (
               <div
@@ -145,7 +145,7 @@ const PickDrinkScreen = () => {
                   alt={drink.name}
                   width={300}
                   height={300}
-                  className="w-50 h-50 object-cover"
+                  className="w-full h-50 object-cover"
                 />
                 <div className="p-4 flex flex-col justify-between flex-grow">
                   <div>
@@ -168,7 +168,7 @@ const PickDrinkScreen = () => {
         </div>
       </div>
 
-      <div className="w-1/3 mt-32 mr-36">
+      <div className="w-full lg:w-1/3 mt-16 lg:mt-36 lg:mr-10 lg:ml-8 ">
         <div className="border-2 border-black rounded-md p-4 flex flex-col justify-center">
           <h2 className="text-xl text-black font-bold mb-4 text-center">Your Order</h2>
           {orderList.length > 0 ? (
@@ -207,11 +207,11 @@ const PickDrinkScreen = () => {
             <p className="text-black">You have ordered this many drinks: {drinkSum}</p>
           </div>
         </div>
-        <div>
+        <div className="mt-4 flex justify-center lg:justify-end">
           <button 
             type="button"
             onClick={handleNextButton}
-            className="p-2 px-10 text-lg mt-4 rounded-full bg-[#C16757] shadow-md ml-96 hover:bg-[#A34A3F] text-white transition duration-300"
+            className="px-8 py-2 rounded-full bg-[#C16757] text-white shadow-md hover:bg-[#A34A3F] transition duration-300"
           >
             Next
           </button>

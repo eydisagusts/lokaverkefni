@@ -21,7 +21,7 @@ const OrderScreen = () => {
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [reservationDateTime, setReservationDateTime] = useState("");
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(2); // Default value set to 2
   const [emailError, setEmailError] = useState<string>("");
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -74,9 +74,9 @@ const OrderScreen = () => {
   const total = [...dishOrder, ...drinkOrder].reduce((acc, item) => acc + item.price, 0);
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="flex justify-center items-center min-h-screen p-4">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <div className="absolute left-2 top-44">
+        <div className="absolute left-2 top-4">
           <button
             type="button"
             onClick={handleGoBack}
@@ -138,12 +138,12 @@ const OrderScreen = () => {
               type="date"
               className="mt-1 block w-full rounded-md border-black shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               value={reservationDateTime.split("T")[0]}
-              onChange={(e) => setReservationDateTime(`${e.target.value}T${reservationDateTime.split("T")[1]}`)}
+              onChange={(e) => setReservationDateTime(e.target.value + "T" + reservationDateTime.split("T")[1])}
               onBlur={(e) => {
                 const selectedDate = new Date(e.target.value);
                 const day = selectedDate.getUTCDay();
                 if (day !== 0 && day !== 6) {
-                  setReservationDateTime(`${e.target.value}T${reservationDateTime.split("T")[1]}`);
+                  setReservationDateTime(e.target.value + "T" + reservationDateTime.split("T")[1]);
                 } else {
                   alert("Bookings are only allowed from Monday to Friday.");
                   e.target.value = "";
@@ -157,7 +157,7 @@ const OrderScreen = () => {
             <select
               className="mt-1 block w-full rounded-md border-black shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               value={reservationDateTime.split("T")[1]}
-              onChange={(e) => setReservationDateTime(`${reservationDateTime.split("T")[0]}T${e.target.value}`)}
+              onChange={(e) => setReservationDateTime(reservationDateTime.split("T")[0] + "T" + e.target.value)}
             >
               {Array.from({ length: 29 }, (_, i) => {
                 const now = new Date();

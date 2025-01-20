@@ -8,7 +8,6 @@ const ReceiptScreen: React.FC = () => {
   const email = searchParams.get("email");
   const phone = searchParams.get("phone");
   const datetime = searchParams.get("datetime");
-  const quantity = searchParams.get("quantity");
   const dishes = searchParams.getAll("dishes");
   const drinks = searchParams.getAll("drinks");
 
@@ -27,8 +26,8 @@ const ReceiptScreen: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center mt-20 text-black">
-      <div className="absolute left-2 top-44">
+    <div className="flex flex-col items-center mt-20 text-black p-4">
+      <div className="absolute left-2 top-4">
         <button
           type="button"
           onClick={handleGoHome}
@@ -37,11 +36,11 @@ const ReceiptScreen: React.FC = () => {
           Home
         </button>
       </div>
-      <div className="absolute top-44 text-center">
+      <div className="text-center mt-4">
         <h1 className="text-2xl font-bold">Thank you for your order</h1>
-        <p className="">We can't wait to see you!</p>
+        <p>We can't wait to see you!</p>
       </div>
-      <div className="receipt-container bg-white shadow-lg rounded-lg p-6 border border-gray-300 w-3/4 mt-6">
+      <div className="receipt-container bg-white shadow-lg rounded-lg p-6 border border-gray-300 w-full max-w-2xl mt-6">
         <h1 className="store-name text-center text-2xl font-bold mb-4">
           {receiptData.storeName}
         </h1>
@@ -49,7 +48,7 @@ const ReceiptScreen: React.FC = () => {
           <p><strong>Name:</strong> {name}</p>
           <p><strong>Email:</strong> {email}</p>
           <p><strong>Phone:</strong> {phone}</p>
-          <p><strong>Date and Time:</strong> {datetime} </p>
+          <p><strong>Date and Time:</strong> {datetime}</p>
         </div>
         <table className="receipt-table w-full mb-4">
           <thead>
