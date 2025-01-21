@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
+import { useOrder } from "../../../OrderContext";
 
 type Dish = {
   id: string;
@@ -19,10 +20,10 @@ type OrderItem = {
 
 const PickDishScreen = () => {
   const [dish, setDish] = useState<Dish | null>(null);
-  const [orderList, setOrderList] = useState<OrderItem[]>([]);
   const [dishes, setDishes] = useState<Dish[]>([]);
   const [currentDishIndex, setCurrentDishIndex] = useState(0);
   const maxOrderLimit = 10;
+  const { dishOrderList, addDishToOrder, removeDishFromOrder } = useOrder();
 
   const fetchDishes = useCallback(async () => {
     try {
@@ -62,36 +63,18 @@ const PickDishScreen = () => {
   const handleAddToOrder = () => {
     if (!dish) return;
   
-    const totalQuantity = orderList.reduce((sum, item) => sum + item.quantity, 0);
+    const totalQuantity = dishOrderList.reduce((sum, item) => sum + item.quantity, 0);
 
     if (totalQuantity >= maxOrderLimit) {
       alert("You can only order up to 10 dishes!");
       return;
     }
 
-    setOrderList((prevOrderList) => {
-      const existingItem = prevOrderList.find((item) => item.dish.id === dish.id);
-
-      if (existingItem) {
-        return prevOrderList.map((item) =>
-          item.dish.id === dish.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-
-      return [...prevOrderList, { dish, quantity: 1 }];
-    });
+    addDishToOrder(dish);
   };
 
   const handleRemoveFromOrder = (dishId: string) => {
-    setOrderList((prevOrderList) =>
-      prevOrderList
-        .map((item) =>
-          item.dish.id === dishId ? { ...item, quantity: item.quantity - 1 } : item
-        )
-        .filter((item) => item.quantity > 0)
-    );
+    removeDishFromOrder(dishId);
   };
 
   const handleGoBack = () => {
@@ -99,10 +82,10 @@ const PickDishScreen = () => {
   };
 
   const handleNextButtonClick = () => {
-    window.location.href = "/menu/pickdrink";
+    window.location.href = "./pickdrink";
   }
 
-  const totalQuantity = orderList.reduce((sum, item) => sum + item.quantity, 0);
+  const totalQuantity = dishOrderList.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <div className="flex flex-col lg:flex-row w-full p-4">
@@ -110,7 +93,7 @@ const PickDishScreen = () => {
         <div className="absolute left-2">
           <button
             type="button"
-            className="p-2 rounded-full underline text-black hover:text-gray-500"
+            className="p-2 underline text-black hover:text-gray-500"
             onClick={handleGoBack}
           >
             Go Back
@@ -159,29 +142,29 @@ const PickDishScreen = () => {
       <div className="w-2/3 lg:w-1/3 mt-16 ml-36 lg:mt-28 lg:mr-20 lg:ml-8">
         <div className="border-2 border-black rounded-md p-4 flex flex-col justify-center">
           <h2 className="text-xl text-black font-bold mb-4 text-center">Your Order</h2>
-          {orderList.length > 0 ? (
+          {dishOrderList.length > 0 ? (
             <ul>
-              {orderList.map((item) => (
-                <li key={item.dish.id} className="flex items-center justify-between mb-2">
+              {dishOrderList.map((item) => (
+                <li key={item.dish?.id} className="flex items-center justify-between mb-2">
                   <div>
-                    <p className="text-black font-bold">{item.dish.name}</p>
+                    <p className="text-black font-bold">{item.dish?.name}</p>
                     <p className="text-gray-600">
                       x{item.quantity}
                       <button
                         type="button"
                         className="text-green-500 ml-2"
-                        onClick={() => handleAddToOrder()}
+                        onClick={() => item.dish && addDishToOrder(item.dish)}
                       >
                         +
                       </button>
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-green-900">${item.dish.price * item.quantity}</p>
+                    <p className="text-green-900">${item.dish ? item.dish.price * item.quantity : 0}</p>
                     <button
                       type="button"
                       className="text-red-600 hover:underline"
-                      onClick={() => handleRemoveFromOrder(item.dish.id)}
+                      onClick={() => item.dish && handleRemoveFromOrder(item.dish.id)}
                     >
                       Remove
                     </button>

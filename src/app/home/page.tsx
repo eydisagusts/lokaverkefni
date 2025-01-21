@@ -80,11 +80,14 @@ const HomePage = () => {
   };
 
   const handleEmailSubmit = async () => {
+    if (!email.trim()) {
+      alert("Please enter an email.");
+      return;
+    }
     try {
       const response = await fetch(`http://localhost:3001/api/order/${email}`);
       const data = await response.json();
       if (!data.success) {
-        console.error(data.error);
         alert("Order not found for the provided email.");
       } else {
         router.push(`/pick-dish?email=${email}`);
@@ -100,9 +103,10 @@ const HomePage = () => {
       try {
         const response = await fetch("http://localhost:3001/api/orders");
         const data = await response.json();
-        if (data[0].dish) {
-          const selectedImages = data[0].dish.slice(0, 4).map((dish) => dish.imageSource);
-          setCarouselImages(selectedImages);
+        if (data.length > 0 && data[0].dish) {
+          setCarouselImages(
+            data[0].dish.slice(0, 3).map((dish) => dish.imageSource)
+          );
         } else {
           console.error("No dishes found in the response data");
         }
@@ -113,6 +117,10 @@ const HomePage = () => {
 
     fetchImages();
   }, []);
+
+  const handleNewOrder = () => {
+    router.push("./components/pickdish");
+  }
 
   return (
     <>
@@ -134,8 +142,8 @@ const HomePage = () => {
               Lil&apos;bits is here to make every visit special. Come for the food,
               stay for the vibe—because life’s best moments come in little bits.
             </p>
-            <div className="w-full md:w-3/4 mt-8 mr-28">
-              <div className="text-center justify-center border-2 border-black h-72  p-4 lg:mt-20 ml-16 w-full">
+            <div className="w-full md:w-3/4 mt-8 mr-28 relative z-10">
+              <div className="text-center justify-center border-2 border-black h-96 p-4 lg:mt-20 ml-16 w-full relative z-10">
                 <p className="text-black mt-2 text-lg">Find your order</p>
                 <div className="mt-8">
                   <p className="text-black mb-2">Please enter your email</p>
@@ -153,6 +161,18 @@ const HomePage = () => {
                   >
                     Submit
                   </button>
+                  <div className="mt-10">
+                    <p>Or start a new order</p>
+                    <div>
+                      <button
+                      type="button"
+                      className="px-4 py-2 mt-4 bg-[#C16757] text-white rounded-full transition duration-300 w-full"
+                      onClick={handleNewOrder}
+                      >
+                        Order
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

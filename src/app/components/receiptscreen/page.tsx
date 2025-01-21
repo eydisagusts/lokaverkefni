@@ -1,6 +1,7 @@
 "use client";
 import type React from "react";
 import { useSearchParams } from "next/navigation";
+import { useOrder } from "../../../OrderContext";
 
 const ReceiptScreen: React.FC = () => {
   const searchParams = useSearchParams();
@@ -8,26 +9,35 @@ const ReceiptScreen: React.FC = () => {
   const email = searchParams.get("email");
   const phone = searchParams.get("phone");
   const datetime = searchParams.get("datetime");
-  const dishes = searchParams.getAll("dishes");
-  const drinks = searchParams.getAll("drinks");
+  const { dishOrderList, drinkOrderList, clearOrder } = useOrder();
 
   const receiptData = {
     storeName: "Lil'Bits",
     date: new Date().toLocaleDateString(),
     items: [
-      ...dishes.map((id) => ({ name: `Dish ${id}`, quantity: 1, price: 10.0 })), // Replace with actual dish data
-      ...drinks.map((id) => ({ name: `Drink ${id}`, quantity: 1, price: 5.0 })), // Replace with actual drink data
+      ...dishOrderList.map((item) => ({
+        name: item.dish?.name,
+        quantity: item.quantity,
+        price: item.dish?.price,
+      })),
+      ...drinkOrderList.map((item) => ({
+        name: item.drink?.name,
+        quantity: item.quantity,
+        price: item.drink?.price,
+      })),
     ],
-    total: dishes.length * 10.0 + drinks.length * 5.0, // Replace with actual total calculation
+    total: dishOrderList.reduce((acc, item) => acc + (item.dish?.price || 0) * item.quantity, 0) +
+           drinkOrderList.reduce((acc, item) => acc + (item.drink?.price || 0) * item.quantity, 0),
   };
 
   const handleGoHome = () => {
+    clearOrder();
     window.location.href = "/";
   };
 
   return (
     <div className="flex flex-col items-center mt-20 text-black p-4">
-      <div className="absolute left-2 top-4">
+      <div className="absolute left-2 top-44">
         <button
           type="button"
           onClick={handleGoHome}
@@ -59,11 +69,11 @@ const ReceiptScreen: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {receiptData.items.map((item) => (
-              <tr key={item.name} className="border-b">
+            {receiptData.items.map((item, index) => (
+              <tr key={`${item.name}-${index}`} className="border-b">
                 <td className="py-2">{item.name}</td>
                 <td className="py-2">{item.quantity}</td>
-                <td className="py-2">${item.price.toFixed(2)}</td>
+                <td className="py-2">${item.price?.toFixed(2)}</td>
               </tr>
             ))}
           </tbody>
