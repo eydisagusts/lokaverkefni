@@ -2,7 +2,7 @@
 import Image from "next/image";
 import "./globals.css";
 import { usePathname } from "next/navigation";
-import { OrderProvider } from "../OrderContext"; // Import OrderProvider
+import { OrderProvider } from "./OrderContext"; // Import OrderProvider
 
 export default function RootLayout({
   children,

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faCheck } from "@fortawesome/free-solid-svg-icons";
-import { useOrder } from "../../../OrderContext";
+import { useOrder } from "../../OrderContext";
 
 type Drink = {
   id: string;

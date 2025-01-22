@@ -1,6 +1,7 @@
 'use client';
-import React, { useState } from "react";
-import { useOrder } from "../../../OrderContext";
+import type React from "react";
+import { useState } from "react";
+import { useOrder } from "../../OrderContext";
 import { useRouter } from "next/navigation";
 
 const OrderScreen = () => {
@@ -8,17 +9,19 @@ const OrderScreen = () => {
   const [reservationName, setReservationName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [reservationDateTime, setReservationDateTime] = useState("");
+  const [reservationDate, setReservationDate] = useState("");
+  const [reservationTime, setReservationTime] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [emailError, setEmailError] = useState<string>("");
   const router = useRouter();
 
   const handleConfirmOrder = () => {
-    if (!reservationName || !email || !phoneNumber || !reservationDateTime || !quantity) {
+    if (!reservationName || !email || !phoneNumber || !reservationDate || !reservationTime || !quantity) {
       alert("Please fill in all the reservation information.");
       return;
     }
 
+    const reservationDateTime = `${reservationDate}T${reservationTime}`;
     const dishesQuery = dishOrderList.map(item => `dishes[]=${item.dish?.id}`).join('&');
     const drinksQuery = drinkOrderList.map(item => `drinks[]=${item.drink?.id}`).join('&');
     const reservationQuery = `name=${encodeURIComponent(reservationName)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phoneNumber)}&datetime=${encodeURIComponent(reservationDateTime)}&quantity=${quantity}`;
@@ -28,6 +31,38 @@ const OrderScreen = () => {
 
   const handleGoBack = () => {
     router.push('./pickdrink');
+  };
+
+  const getAvailableTimes = () => {
+    const now = new Date();
+    const selectedDate = new Date(reservationDate);
+    const isToday = selectedDate.toDateString() === now.toDateString();
+    const times = [];
+
+    for (let i = 0; i < 29; i++) {
+      const hours = Math.floor(i / 4) + 16;
+      const minutes = (i % 4) * 15;
+      const timeString = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+      const time = new Date(selectedDate);
+      time.setHours(hours, minutes, 0, 0);
+
+      if (!isToday || time > now) {
+        times.push(timeString);
+      }
+    }
+
+    return times;
+  };
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedDate = new Date(e.target.value);
+    const day = selectedDate.getUTCDay();
+    if (day === 0 || day === 6) {
+      alert("Bookings are only allowed from Monday to Friday.");
+      setReservationDate("");
+    } else {
+      setReservationDate(e.target.value);
+    }
   };
 
   return (
@@ -94,18 +129,8 @@ const OrderScreen = () => {
             <input
               type="date"
               className="mt-1 block w-full rounded-md border-black shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              value={reservationDateTime.split("T")[0]}
-              onChange={(e) => setReservationDateTime(`${e.target.value}T${reservationDateTime.split("T")[1]}`)}
-              onBlur={(e) => {
-                const selectedDate = new Date(e.target.value);
-                const day = selectedDate.getUTCDay();
-                if (day !== 0 && day !== 6) {
-                  setReservationDateTime(`${e.target.value}T${reservationDateTime.split("T")[1]}`);
-                } else {
-                  alert("Bookings are only allowed from Monday to Friday.");
-                  e.target.value = "";
-                }
-              }}
+              value={reservationDate}
+              onChange={handleDateChange}
               min={new Date().toISOString().split("T")[0]}
             />
           </label>
@@ -113,27 +138,14 @@ const OrderScreen = () => {
             <span className="text-black">Time</span>
             <select
               className="mt-1 block w-full rounded-md border-black shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              value={reservationDateTime.split("T")[1]}
-              onChange={(e) => setReservationDateTime(`${reservationDateTime.split("T")[0]}T${e.target.value}`)}
+              value={reservationTime}
+              onChange={(e) => setReservationTime(e.target.value)}
             >
-              {Array.from({ length: 29 }, (_, i) => {
-                const now = new Date();
-                const hours = Math.floor(i / 4) + 16;
-                const minutes = (i % 4) * 15;
-                const timeString = `${hours
-                  .toString()
-                  .padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
-                const selectedTime = new Date();
-                selectedTime.setHours(hours, minutes, 0, 0);
-                if (selectedTime > now) {
-                  return (
-                    <option key={timeString} value={timeString}>
-                      {timeString}
-                    </option>
-                  );
-                }
-                return null;
-              })}
+              {getAvailableTimes().map((time) => (
+                <option key={time} value={time}>
+                  {time}
+                </option>
+              ))}
             </select>
           </label>
           <label className="block">

@@ -119,7 +119,7 @@ const HomePage = () => {
   }, []);
 
   const handleNewOrder = () => {
-    router.push("./components/pickdish");
+    router.push("/pickdish");
   }
 
   return (
@@ -143,26 +143,10 @@ const HomePage = () => {
               stay for the vibe—because life’s best moments come in little bits.
             </p>
             <div className="w-full md:w-3/4 mt-8 mr-28 relative z-10">
-              <div className="text-center justify-center border-2 border-black h-96 p-4 lg:mt-20 ml-16 w-full relative z-10">
-                <p className="text-black mt-2 text-lg">Find your order</p>
+              <div className="text-center justify-center border-2 border-black h-60 p-4 lg:mt-20 ml-16 w-full relative z-10">
+                <p className="text-black mt-2 text-lg">Start your order</p>
                 <div className="mt-8">
-                  <p className="text-black mb-2">Please enter your email</p>
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    className="px-4 py-2 rounded-sm mt-1 text-black border-black w-full"
-                    value={email}
-                    onChange={handleEmailChange}
-                  />
-                  <button
-                    type="button"
-                    className="px-4 py-2 mt-4 bg-[#C16757] text-white rounded-full transition duration-300 w-full"
-                    onClick={handleEmailSubmit}
-                  >
-                    Submit
-                  </button>
                   <div className="mt-10">
-                    <p>Or start a new order</p>
                     <div>
                       <button
                       type="button"

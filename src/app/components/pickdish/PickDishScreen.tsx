@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
-import { useOrder } from "../../../OrderContext";
+import { useOrder } from "../../OrderContext";
 
 type Dish = {
   id: string;
