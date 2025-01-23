@@ -13,11 +13,6 @@ type Dish = {
   price: number;
 };
 
-type OrderItem = {
-  dish: Dish;
-  quantity: number;
-};
-
 const PickDishScreen = () => {
   const [dish, setDish] = useState<Dish | null>(null);
   const [dishes, setDishes] = useState<Dish[]>([]);
@@ -62,8 +57,11 @@ const PickDishScreen = () => {
 
   const handleAddToOrder = () => {
     if (!dish) return;
-  
-    const totalQuantity = dishOrderList.reduce((sum, item) => sum + item.quantity, 0);
+
+    const totalQuantity = dishOrderList.reduce(
+      (sum, item) => sum + item.quantity,
+      0
+    );
 
     if (totalQuantity >= maxOrderLimit) {
       alert("You can only order up to 10 dishes!");
@@ -77,15 +75,36 @@ const PickDishScreen = () => {
     removeDishFromOrder(dishId);
   };
 
+  const handlePlusIcon = (dish: Dish) => {
+    const totalQuantity = dishOrderList.reduce(
+      (sum, item) => sum + item.quantity,
+      0
+    );
+
+    if (totalQuantity >= maxOrderLimit) {
+      alert("You can only order up to 10 dishes!");
+      return;
+    }
+
+    addDishToOrder(dish);
+  };
+
   const handleGoBack = () => {
-    window.location.href = '/';
+    window.location.href = "/";
   };
 
   const handleNextButtonClick = () => {
+    if (dishOrderList.length === 0) {
+      alert("Please select at least one dish before proceeding.");
+      return;
+    }
     window.location.href = "./pickdrink";
-  }
+  };
 
-  const totalQuantity = dishOrderList.reduce((sum, item) => sum + item.quantity, 0);
+  const totalQuantity = dishOrderList.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  );
 
   return (
     <div className="flex flex-col lg:flex-row w-full p-4">
@@ -104,7 +123,7 @@ const PickDishScreen = () => {
 
         <div className="mt-8">
           {dish ? (
-            <div className="border-2 border-black rounded-md p-4 mx-auto w-full md:w-1/2">
+            <div className="border-2 border-black rounded-md p-4 mx-auto w-full sm:w-3/4 md:w-2/3 lg:w-1/2">
               <Image
                 src={dish.imageSource}
                 alt={dish.name}
@@ -112,7 +131,9 @@ const PickDishScreen = () => {
                 height={300}
                 className="w-full h-auto object-cover"
               />
-              <h2 className="text-black text-2xl font-bold mt-4">{dish.name}</h2>
+              <h2 className="text-black text-2xl font-bold mt-4">
+                {dish.name}
+              </h2>
               <p className="text-black mt-2">{dish.ingredients.join(", ")}</p>
               <p className="text-green-900 font-bold mt-2">${dish.price}</p>
             </div>
@@ -139,13 +160,18 @@ const PickDishScreen = () => {
         </div>
       </div>
 
-      <div className="w-2/3 lg:w-1/3 mt-16 ml-36 lg:mt-28 lg:mr-20 lg:ml-8">
+      <div className="w-full lg:w-1/3 mt-16 lg:mt-28 lg:mr-20 lg:ml-8">
         <div className="border-2 border-black rounded-md p-4 flex flex-col justify-center">
-          <h2 className="text-xl text-black font-bold mb-4 text-center">Your Order</h2>
+          <h2 className="text-xl text-black font-bold mb-4 text-center">
+            Your Order
+          </h2>
           {dishOrderList.length > 0 ? (
             <ul>
               {dishOrderList.map((item) => (
-                <li key={item.dish?.id} className="flex items-center justify-between mb-2">
+                <li
+                  key={item.dish?.id}
+                  className="flex items-center justify-between mb-2"
+                >
                   <div>
                     <p className="text-black font-bold">{item.dish?.name}</p>
                     <p className="text-gray-600">
@@ -153,18 +179,22 @@ const PickDishScreen = () => {
                       <button
                         type="button"
                         className="text-green-500 ml-2"
-                        onClick={() => item.dish && addDishToOrder(item.dish)}
+                        onClick={() => item.dish && handlePlusIcon(item.dish)}
                       >
                         +
                       </button>
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-green-900">${item.dish ? item.dish.price * item.quantity : 0}</p>
+                    <p className="text-green-900">
+                      ${item.dish ? item.dish.price * item.quantity : 0}
+                    </p>
                     <button
                       type="button"
                       className="text-red-600 hover:underline"
-                      onClick={() => item.dish && handleRemoveFromOrder(item.dish.id)}
+                      onClick={() =>
+                        item.dish && handleRemoveFromOrder(item.dish.id)
+                      }
                     >
                       Remove
                     </button>
@@ -180,7 +210,7 @@ const PickDishScreen = () => {
           </div>
         </div>
         <div className="mt-4 flex justify-center lg:justify-end">
-          <button 
+          <button
             type="button"
             onClick={handleNextButtonClick}
             className="px-8 py-2 rounded-full bg-[#C16757] text-white shadow-md hover:bg-[#A34A3F] transition duration-300"

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 import Image from "next/image";
 import "./globals.css";
 import { usePathname } from "next/navigation";
-import { OrderProvider } from "./OrderContext"; // Import OrderProvider
+import { OrderProvider } from "./OrderContext";
 
 export default function RootLayout({
   children,
@@ -11,9 +11,26 @@ export default function RootLayout({
 }>) {
   const pathname = usePathname();
 
-  // Helper function to check if the menu item should be highlighted
   const isActive = (path: string) =>
     pathname === path ? "text-white font-bold" : "text-black";
+
+  //Ef skjárinn er sm eða md þá á bara að sýna active page header
+  const getActiveText = () => {
+    switch (pathname) {
+      case "/":
+        return "Home";
+      case "/pickdish":
+        return "Pick Dish Screen";
+      case "/pickdrink":
+        return "Select Drink";
+      case "/orderscreen":
+        return "Order Screen";
+      case "/receiptscreen":
+        return "Receipt Screen";
+      default:
+        return "";
+    }
+  };
 
   return (
     <html lang="en">
@@ -21,30 +38,31 @@ export default function RootLayout({
         <OrderProvider>
           <header className="bg-[#C16757]">
             <div className="flex items-center justify-between">
-              <div className="flex items-center">
+              <div className="flex items-center justify-between lg:justify-between sm:justify-start">
                 <Image
                   src="/images/lilbits.png"
                   alt="Logo"
                   width={160}
                   height={160}
-                  className="ml-16"
+                  className="ml-4 md:ml-20"
                 />
-                <ul className="flex flex-row text-center space-x-10 ml-44 text-xl">
+
+                <ul className="hidden lg:flex flex-row text-center space-x-10 ml-44 text-xl">
                   <li>
                     <p className={`${isActive("/")}`}>Home</p>
                   </li>
                   <li>
-                    <p className={`${isActive("/menu/pickdish")}`}>
+                    <p className={`${isActive("/pickdish")}`}>
                       Pick Dish Screen
                     </p>
                   </li>
                   <li>
-                    <p className={`${isActive("/menu/pickdrink")}`}>
-                      Select Drink
-                    </p>
+                    <p className={`${isActive("/pickdrink")}`}>Select Drink</p>
                   </li>
                   <li>
-                    <p className={`${isActive("/orderscreen")}`}>Order Screen</p>
+                    <p className={`${isActive("/orderscreen")}`}>
+                      Order Screen
+                    </p>
                   </li>
                   <li>
                     <p className={`${isActive("/receiptscreen")}`}>
@@ -52,6 +70,9 @@ export default function RootLayout({
                     </p>
                   </li>
                 </ul>
+                <div className="lg:hidden flex justify-end right-10 w-full text-xl absolute top-16 sm:justify-center sm:pl-10 sm:text-2xl">
+                  <p className="text-white font-bold">{getActiveText()}</p>
+                </div>
               </div>
             </div>
           </header>

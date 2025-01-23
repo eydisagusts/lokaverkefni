@@ -2,12 +2,21 @@ import { createContext, useContext, useState, useEffect } from "react";
 
 export type Dish = {
   id: string;
+
   name: string;
+
+  description: string;
+
+  imageSource: string;
+
+  ingredients: string[];
+
+  category: string;
+
   price: number;
 };
 
 type Drink = {
-
   id: string;
 
   name: string;
@@ -21,7 +30,6 @@ type Drink = {
   ingredients: string[];
 
   price: number;
-
 };
 
 export type OrderItem = {
@@ -42,23 +50,25 @@ type OrderContextType = {
 
 const OrderContext = createContext<OrderContextType | undefined>(undefined);
 
-export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [dishOrderList, setDishOrderList] = useState<OrderItem[]>(() => {
-    const savedDishes = localStorage.getItem('dishOrderList');
+    const savedDishes = localStorage.getItem("dishOrderList");
     return savedDishes ? JSON.parse(savedDishes) : [];
   });
 
   const [drinkOrderList, setDrinkOrderList] = useState<OrderItem[]>(() => {
-    const savedDrinks = localStorage.getItem('drinkOrderList');
+    const savedDrinks = localStorage.getItem("drinkOrderList");
     return savedDrinks ? JSON.parse(savedDrinks) : [];
   });
 
   useEffect(() => {
-    localStorage.setItem('dishOrderList', JSON.stringify(dishOrderList));
+    localStorage.setItem("dishOrderList", JSON.stringify(dishOrderList));
   }, [dishOrderList]);
 
   useEffect(() => {
-    localStorage.setItem('drinkOrderList', JSON.stringify(drinkOrderList));
+    localStorage.setItem("drinkOrderList", JSON.stringify(drinkOrderList));
   }, [drinkOrderList]);
 
   const addDishToOrder = (dish: Dish) => {
@@ -66,7 +76,9 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       const existingItem = prev.find((item) => item.dish?.id === dish.id);
       if (existingItem) {
         return prev.map((item) =>
-          item.dish?.id === dish.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.dish?.id === dish.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
         );
       }
       return [...prev, { dish, quantity: 1 }];
@@ -78,7 +90,9 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       const existingItem = prev.find((item) => item.drink?.id === drink.id);
       if (existingItem) {
         return prev.map((item) =>
-          item.drink?.id === drink.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.drink?.id === drink.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
         );
       }
       return [...prev, { drink, quantity: 1 }];
@@ -99,7 +113,9 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setDrinkOrderList((prev) =>
       prev
         .map((item) =>
-          item.drink?.id === id ? { ...item, quantity: item.quantity - 1 } : item
+          item.drink?.id === id
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
         )
         .filter((item) => item.quantity > 0)
     );
@@ -108,8 +124,8 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const clearOrder = () => {
     setDishOrderList([]);
     setDrinkOrderList([]);
-    localStorage.removeItem('dishOrderList');
-    localStorage.removeItem('drinkOrderList');
+    localStorage.removeItem("dishOrderList");
+    localStorage.removeItem("drinkOrderList");
   };
 
   return (

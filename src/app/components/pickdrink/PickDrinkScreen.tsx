@@ -25,7 +25,9 @@ const PickDrinkScreen = () => {
         const response = await fetch("http://localhost:3001/api/orders");
         const data = await response.json();
         if (data.length > 0) {
-          const allDrinks = data.flatMap((order: { drinks: Drink[] }) => order.drinks);
+          const allDrinks = data.flatMap(
+            (order: { drinks: Drink[] }) => order.drinks
+          );
           setDrinks(allDrinks.slice(0, 9));
         }
       } catch (error) {
@@ -37,9 +39,12 @@ const PickDrinkScreen = () => {
   }, []);
 
   const handleAddToOrder = (drink: Drink) => {
-    const drinkSum = drinkOrderList.reduce((sum, item) => sum + item.quantity, 0);
+    const totalQuantity = drinkOrderList.reduce(
+      (sum, item) => sum + item.quantity,
+      0
+    );
 
-    if (drinkSum >= 10) {
+    if (totalQuantity >= 10) {
       alert("You can only order up to 10 drinks!");
       return;
     }
@@ -52,9 +57,12 @@ const PickDrinkScreen = () => {
   };
 
   const handlePlusIcon = (drink: Drink) => {
-    const drinkSum = drinkOrderList.reduce((sum, item) => sum + item.quantity, 0);
+    const totalQuantity = drinkOrderList.reduce(
+      (sum, item) => sum + item.quantity,
+      0
+    );
 
-    if (drinkSum >= 10) {
+    if (totalQuantity >= 10) {
       alert("You can only order up to 10 drinks!");
       return;
     }
@@ -63,8 +71,8 @@ const PickDrinkScreen = () => {
   };
 
   const handleGoBack = () => {
-    window.location.href = './pickdish';
-  }
+    window.location.href = "./pickdish";
+  };
 
   const handleNextButton = () => {
     if (drinkOrderList.length === 0) {
@@ -72,24 +80,29 @@ const PickDrinkScreen = () => {
       return;
     }
     window.location.href = "./orderscreen";
-  }
+  };
 
-  const drinkSum = drinkOrderList.reduce((sum, item) => sum + item.quantity, 0);
+  const totalQuantity = drinkOrderList.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  );
 
   return (
     <div className="flex flex-col lg:flex-row w-full p-4">
       <div className="flex-1">
         <div className="absolute left-2">
           <button
-          type="button"
-          onClick={handleGoBack}
-          className="p-2 underline text-black hover:text-gray-500"
+            type="button"
+            onClick={handleGoBack}
+            className="p-2 underline text-black hover:text-gray-500"
           >
             Go Back
           </button>
         </div>
         <div className="text-center mt-2 font-bold">
-          <h1 className="text-black text-4xl mt-8">Please select your drinks</h1>
+          <h1 className="text-black text-4xl mt-8">
+            Please select your drinks
+          </h1>
           <p className="text-black">You can order up to 10 drinks!</p>
         </div>
 
@@ -101,7 +114,7 @@ const PickDrinkScreen = () => {
                 className="relative border-2 border-black cursor-pointer rounded-md overflow-hidden shadow-lg hover:bg-gray-300 flex flex-col justify-between"
                 onClick={() => handleAddToOrder(drink)}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
+                  if (e.key === "Enter" || e.key === " ") {
                     handleAddToOrder(drink);
                   }
                 }}
@@ -115,9 +128,13 @@ const PickDrinkScreen = () => {
                 />
                 <div className="p-4 flex flex-col justify-between flex-grow">
                   <div>
-                    <h4 className="text-xl text-black font-bold">{drink.name}</h4>
+                    <h4 className="text-xl text-black font-bold">
+                      {drink.name}
+                    </h4>
                     <p className="text-gray-600">{drink.category}</p>
-                    <p className="text-sm text-black mt-2">{drink.ingredients.join(", ")}</p>
+                    <p className="text-sm text-black mt-2">
+                      {drink.ingredients.join(", ")}
+                    </p>
                   </div>
                   <p className="text-green-900 text-sm mt-2">${drink.price}</p>
                 </div>
@@ -134,17 +151,23 @@ const PickDrinkScreen = () => {
         </div>
       </div>
 
-      <div className="w-full lg:w-1/3 mt-16 lg:mt-36 lg:mr-10 lg:ml-8 ">
+      <div className="w-full lg:w-1/3 mt-16 lg:mt-36 lg:mr-10 lg:ml-8">
         <div className="border-2 border-black rounded-md p-4 flex flex-col justify-center">
-          <h2 className="text-xl text-black font-bold mb-4 text-center">Your Order</h2>
+          <h2 className="text-xl text-black font-bold mb-4 text-center">
+            Your Order
+          </h2>
           {drinkOrderList.length > 0 ? (
             <ul>
               {drinkOrderList.map((item) => (
-                <li key={item.drink?.id} className="flex items-center justify-between mb-2">
+                <li
+                  key={item.drink?.id}
+                  className="flex items-center justify-between mb-2"
+                >
                   <div>
                     <p className="text-black font-bold">{item.drink?.name}</p>
-                    <p className="text-gray-600">x{item.quantity}
-                      <button 
+                    <p className="text-gray-600">
+                      x{item.quantity}
+                      <button
                         type="button"
                         className="text-green-500 ml-2"
                         onClick={() => item.drink && handlePlusIcon(item.drink)}
@@ -155,12 +178,16 @@ const PickDrinkScreen = () => {
                   </div>
                   <div className="text-right">
                     {item.drink && (
-                      <p className="text-green-900">${item.drink.price * item.quantity}</p>
+                      <p className="text-green-900">
+                        ${item.drink.price * item.quantity}
+                      </p>
                     )}
                     <button
                       type="button"
                       className="text-red-600 hover:underline"
-                      onClick={() => item.drink && handleRemoveFromOrder(item.drink)}
+                      onClick={() =>
+                        item.drink && handleRemoveFromOrder(item.drink)
+                      }
                     >
                       Remove
                     </button>
@@ -172,11 +199,13 @@ const PickDrinkScreen = () => {
             <p className="text-gray-600">No items in your order</p>
           )}
           <div>
-            <p className="text-black">You have ordered this many drinks: {drinkSum}</p>
+            <p className="text-black">
+              You have ordered this many drinks: {totalQuantity}
+            </p>
           </div>
         </div>
         <div className="mt-4 flex justify-center lg:justify-end">
-          <button 
+          <button
             type="button"
             onClick={handleNextButton}
             className="px-8 py-2 rounded-full bg-[#C16757] text-white shadow-md hover:bg-[#A34A3F] transition duration-300"
@@ -187,6 +216,6 @@ const PickDrinkScreen = () => {
       </div>
     </div>
   );
-}
+};
 
 export default PickDrinkScreen;
